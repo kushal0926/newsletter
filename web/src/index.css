@@ -1,3 +1,12 @@
-
-
 @import "tailwindcss";
+
+@theme inline {
+    --custom-white: #1f9f6f0
+    --custom-black: #1c191f
+    --color-cream: var(--custom-white)
+    --color-ink: var(--custom-black)
+}
+
+body {
+    background-color: #1c1917;
+}

@@ -1,7 +1,9 @@
+import SignUp from "./pages/signup";
+
 export default function App() {
   return (
-    <div>
-      <h1>newsletter app</h1>
+    <div >
+      <SignUp />
     </div>
   );
 }
