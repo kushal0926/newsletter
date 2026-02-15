@@ -18,7 +18,7 @@ const SignUp = () => {
 
   return (
     <section>
-      <div className="text-center text-4xl font-bold m-5 mb-10 text-amber-50">
+      <div className="text-center text-4xl font-bold m-5 mb-10 text-cream">
         <h1>
           welcome to the {""}
           <span>newsletter service</span>
@@ -70,7 +70,7 @@ const SignUp = () => {
               required
             />
             <button
-              className="shrink-0 mr-2 px-6 py-3 text-sm bg-[#f9f6f0] rounded-md active:scale-95  transition duration-300 text-black font-bold"
+              className="shrink-0 mr-2 px-6 py-3 text-sm bg-cream rounded-md active:scale-95  transition duration-300 text-ink font-bold"
               onClick={handleSignup}
             >
               Signup Now
