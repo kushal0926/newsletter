@@ -1,2 +1,2 @@
 
-![architecture](newsletters.png)
+![architecture](architecture.png)
