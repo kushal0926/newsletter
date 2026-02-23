@@ -1,6 +1,7 @@
 import express, { Express, Response, Request } from "express";
 import { createHealthRouter } from "./routes/health.routes";
 import signupRoutes from "./routes/signup.routes";
+import cors from "cors";
 
 const errorHandler = (error: Error, req: Request, res: Response) => {
   console.log(error);
@@ -22,6 +23,7 @@ export const createServer = (): Express => {
   // middleware setup
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
+  server.use(cors());
 
   server.use("/", createHealthRouter());
   server.use("/newsletter/signup", signupRoutes);
@@ -34,3 +36,4 @@ export const createServer = (): Express => {
 
   return server;
 };
+

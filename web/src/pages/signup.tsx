@@ -1,8 +1,11 @@
 import { useState, type ChangeEventHandler } from "react";
+import { API_URL } from "../utils/constants";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
-  // const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange: ChangeEventHandler<HTMLInputElement> = ({
     target,
@@ -10,33 +13,61 @@ const SignUp = () => {
     setEmail(target.value);
   };
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!email) return;
-
+    const body = JSON.stringify({ email });
     console.log("signup clicked!");
+    try {
+      const response = await fetch(`${API_URL}/newsletter/signup`, {
+        method: "POST",
+        body,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        return setErrorMessage(
+          payload?.message ?? "Invalid email, please try again.",
+        );
+      }
+
+      return navigate("/confirm-email-sent", { state: { email } });
+    } catch (error: unknown) {
+      console.log(error);
+      setErrorMessage("something went wrong. please try again.");
+    }
   };
 
   return (
-    <section>
-      <div className="text-center text-4xl font-bold m-5 mb-10 text-cream">
+    <section className="flex flex-col items-center justify-center min-h-screen bg-[#0D0D0D]">
+      <div className="text-center text-4xl font-bold m-5 mb-10 text-cream ">
         <h1>
           welcome to the {""}
           <span>newsletter service</span>
         </h1>
-        <p>sign-up below to be the first to get notified!</p>
+        <h2>sign-up to be the first to get</h2>
+        <span> notified!</span>
       </div>
 
       <div className="flex flex-col text-center justify-center">
-        <div className="flex mt-2 justify-center items-end">
-          {/*<div className="flex flex-col">
-            <span className="text-gray-700 text-sm text-start mb-2 text-opacity-70">
-              SignUp with your email address
+        <div className="flex flex-col mt-2 justify-center items-center">
+          <div className="flex flex-col">
+            <span className="text-gray-400 text-sm text-start mb-2 text-opacity-70 font-bold">
+              Signup with your email address
             </span>
-            <span className="text-red-600 text-sm text-start mb-1 text-opacity-70">
+            <span className="text-red-600 text-sm text-start mb-1 text-opacity-70 font-bold">
               {errorMessage}
             </span>
-          </div>*/}
-          <form className="relative flex items-center bg-[#121212] rounded border border-white/5 mt-6 text-sm max-w-md w-full">
+          </div>
+          <form
+            className="relative flex items-center bg-[#121212] rounded border border-white/5 mt-6 text-sm max-w-md w-full"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSignup();
+            }}
+          >
             <svg
               className="absolute left-3"
               width="19"
@@ -66,14 +97,14 @@ const SignUp = () => {
               name="email"
               placeholder="Enter your email"
               onChange={handleEmailChange}
-              className="focus:outline-none pl-10 py-5 bg-[#121212] w-full placeholder-gray-500 y-50 font-bold text-gray-500"
+              className="focus:outline-none pl-10 py-5 bg-[#121212] w-full placeholder-gray-500 y-50 font-bold text-cream"
               required
             />
             <button
-              className="shrink-0 mr-2 px-6 py-3 text-sm bg-cream rounded-md active:scale-95  transition duration-300 text-ink font-bold"
-              onClick={handleSignup}
+              className="shrink-0 mr-2 px-6 py-3 text-sm bg-cream rounded-md active:scale-95  transition duration-300 text-ink"
+              type="submit"
             >
-              Signup Now
+              <span className="font-bold text-ink">Signup Now</span>
             </button>
           </form>
         </div>
