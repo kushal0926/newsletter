@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { isEmailValid } from "../utils/email";
+import { upsertSubscriber } from "../services/newsletter";
 
 interface SignupPayload {
   email?: string;
@@ -12,16 +13,30 @@ export const signupHandler = async (req: Request, res: Response) => {
 
     // validating the email
     if (!email) {
-      throw new Error("email is required!");
+      return res.status(400).json({
+        success: false,
+        message: "email is required!",
+      });
     }
 
     if (!isEmailValid(email)) {
-      throw new Error("email is not valid");
+      return res.status(400).json({
+        success: false,
+        message: "email is not valid",
+      });
     }
 
-    return res.status(200).json({ message: "ok" });
+    // creating user newsletter_subscriber
+    const newsletterSubscriber = await upsertSubscriber(email);
+
+    console.log("signup successful");
+
+    return res.status(200).json(newsletterSubscriber);
   } catch (error) {
-    console.log(error);
-    throw new Error()
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "failed to upsert subscriber",
+    });
   }
 };

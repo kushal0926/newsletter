@@ -25,5 +25,6 @@ export const subscriberTable = pgTable("subscribers", {
 
     updatedAt: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
+         .$onUpdate(() => new Date())
         .notNull()
 });
