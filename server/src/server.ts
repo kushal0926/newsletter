@@ -25,8 +25,8 @@ export const createServer = (): Express => {
   server.use(express.urlencoded({ extended: true }));
   server.use(cors());
 
-  server.use("/", createHealthRouter());
-  server.use("/newsletter/signup", signupRoutes);
+  server.use("/api", createHealthRouter());
+  server.use("/api/newsletter", signupRoutes);
 
   server.use((req, res, next) => {
     next(new Error("Not found"));
@@ -36,4 +36,3 @@ export const createServer = (): Express => {
 
   return server;
 };
-

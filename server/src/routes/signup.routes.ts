@@ -3,6 +3,6 @@ import { signupHandler } from "../controller/signup.controller";
 
 const signupRoutes: Router = Router();
 
-signupRoutes.post("/", signupHandler);
+signupRoutes.post("/signup", signupHandler);
 
 export default signupRoutes;
