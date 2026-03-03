@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { isEmailValid } from "../utils/email";
 import { upsertSubscriber } from "../services/newsletter";
-import HttpStatus from "http-status"
+import HttpStatus from "http-status";
+
 interface SignupPayload {
   email?: string;
 }

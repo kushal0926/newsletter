@@ -1,11 +1,10 @@
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import { DATABASE_URL } from "./config/env.config";
 
-const databaseUrl = process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL is required");
+if (!DATABASE_URL) {
+  throw new Error("databaase url is required");
 }
 
-const sql = neon(databaseUrl);
+const sql = neon(DATABASE_URL);
 export const db = drizzle({ client: sql });

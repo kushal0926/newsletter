@@ -5,5 +5,4 @@ export const isEmailValid = (email: string): boolean => {
   return EMAIL_REGEX.test(email);
 };
 
-
-// making sure the users sends the correct email 
+// making sure the users sends the correct email

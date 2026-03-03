@@ -1,10 +1,11 @@
 import "dotenv/config";
 import { createServer } from "./server";
+import { PORT } from "./config/env.config";
 
-const PORT = process.env.PORT || 8080;
+const port = PORT || 8080;
 
-const server = createServer().listen(PORT, () => {
-  console.log(`🚀 Server ready at: http://localhost:${PORT}`);
+const server = createServer().listen(port, () => {
+  console.log(`🚀 Server ready at: http://localhost:${port}`);
 });
 
 const exitHandler = () => {
@@ -29,6 +30,8 @@ process.on("unhandledRejection", unexpectedErrorHandler);
 process.on("SIGTERM", () => {
   console.info("SIGTERM received");
   if (server) {
-    server.close();
+    server.close(() => {
+      process.exit(0);
+    });
   }
 });
