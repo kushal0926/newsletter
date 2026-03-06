@@ -45,10 +45,10 @@ const SignUp = () => {
       <div className="text-center text-4xl font-bold m-5 mb-10 text-cream ">
         <h1>
           welcome to the {""}
-          <span>newsletter service</span>
+          <mark>newsletter service</mark>
         </h1>
         <h2>sign-up to be the first to get</h2>
-        <span> notified!</span>
+        <mark> notified!</mark>
       </div>
 
       <div className="flex flex-col text-center justify-center">

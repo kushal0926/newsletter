@@ -1,6 +1,6 @@
 import request from "supertest";
 import httpStatus from "http-status";
-import { createServer } from "../src/server";
+import { createServer } from "../../src/server";
 import { describe, it } from "node:test";
 
 describe("signup", () => {

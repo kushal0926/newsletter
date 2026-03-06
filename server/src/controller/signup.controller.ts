@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import { isEmailValid } from "../utils/email";
 import { upsertSubscriber } from "../services/newsletter";
 import HttpStatus from "http-status";
+import { PubSubService } from "src/services/pubsub/type";
 
 interface SignupPayload {
   email?: string;
 }
 
-export const signupHandler = async (req: Request, res: Response) => {
+export const signupHandler = (pubSub: PubSubService) => async (req: Request, res: Response) => {
   try {
     // getting the email from the request
     const { email = "" } = req.body as SignupPayload;
@@ -29,6 +30,9 @@ export const signupHandler = async (req: Request, res: Response) => {
 
     // creating user newsletter_subscriber
     const newsletterSubscriber = await upsertSubscriber(email);
+    
+    // publish a notification pub/sub topic
+    await pubSub.publish("newsletter-signup", { data: "signup done!"})
 
     console.log("signup successful");
 

@@ -8,8 +8,8 @@
 }
 
 @layer base {
-    span {
-        @apply text-indigo-400;
+    mark {
+        @apply text-indigo-600 bg-cream rounded px-1;
     }
 }
 
