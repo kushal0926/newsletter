@@ -1,12 +1,14 @@
 import request from "supertest";
 import httpStatus from "http-status";
+import { describe, it } from "@jest/globals";
 import { createServer } from "../../src/server";
-import { describe, it } from "node:test";
+import { TestPubSub } from "../../src/services/pubsub/test-pubsub";
 
-describe("signup", () => {
-  const app = createServer();
+describe("health", () => {
+  const pubSub = new TestPubSub();
+  const app = createServer(pubSub);
 
-  it("should return 200 if it is up", () => {
-    request(app).get("/health").send().expect("ok").expect(httpStatus.OK);
+  it("should return 200 if it is up", async () => {
+    await request(app).get("/api/health").send().expect("ok").expect(httpStatus.OK);
   });
 });

@@ -1,10 +1,12 @@
 import "dotenv/config";
 import { createServer } from "./server";
-import { PORT } from "./config/env.config";
+import { GCP_PROJECT_ID, PORT } from "./config/env.config";
+import { GooglePubSubService } from "./services/pubsub/gcp";
 
 const port = PORT || 8080;
+const pubSub = new GooglePubSubService(GCP_PROJECT_ID as string);
 
-const server = createServer().listen(port, () => {
+const server = createServer(pubSub).listen(port, () => {
   console.log(`🚀 Server ready at: http://localhost:${port}`);
 });
 

@@ -2,6 +2,8 @@ export type Code = keyof typeof errors;
 
 const errors = {
   "ERR-001": `{#key} is required`,
+  "ERR-003": `{#key} is required`,
+
 };
 
 export const getErrorDescription = (code: Code, key?: string) => {

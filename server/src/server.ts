@@ -3,6 +3,7 @@ import type { Express, Response, Request } from "express";
 import { createHealthRouter } from "./routes/health.routes";
 import { createSignupRoutes } from "./routes/signup.routes";
 import cors from "cors";
+import { PubSubService } from "./services/pubsub/type";
 
 const errorHandler = (error: Error, req: Request, res: Response) => {
   console.log(error);
@@ -13,7 +14,7 @@ const errorHandler = (error: Error, req: Request, res: Response) => {
   });
 };
 
-export const createServer = (): Express => {
+export const createServer = (pubSub: PubSubService): Express => {
   const server: Express = express();
 
   // middleware setup
@@ -22,7 +23,7 @@ export const createServer = (): Express => {
   server.use(cors());
 
   server.use("/api", createHealthRouter());
-  server.use("/api/newsletter", createSignupRoutes());
+  server.use("/api/newsletter", createSignupRoutes(pubSub));
 
   server.use((req, res, next) => {
     next(new Error("Not found"));

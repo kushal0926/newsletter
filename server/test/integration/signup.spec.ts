@@ -1,13 +1,13 @@
 import request from "supertest";
 import httpStatus from "http-status";
+import { describe, it } from "@jest/globals";
 import { createServer } from "../../src/server";
-import { describe, it } from "node:test";
-// import { TestPubSub } from "../../src/services/pubsub/test-pubsub";
+import { TestPubSub } from "../../src/services/pubsub/test-pubsub";
 
 describe("signup", () => {
-  // const pubSub = new TestPubSub();
+  const pubSub = new TestPubSub();
 
-  const app = createServer();
+  const app = createServer(pubSub);
 
   it("should return 400 if not sent an email in the body", async () => {
     await request(app)
