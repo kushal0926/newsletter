@@ -6,18 +6,23 @@ import { NODE_ENV } from "../../config/env.config";
 
 export interface GCPPubSubPayload {
     message: {
-        attrubutes: string[];
-        data: Buffer | string;
-        message_id: string
+        attributes?: Record<string, string>;
+        data: string;
+        messageId: string;
+        publishTime?: string;
     };
 
-    subscription: string
+    subscription: string;
 }
 
 export function isPubSubPayload(
     body: Record<string, any>
 ): body is GCPPubSubPayload {
-    return Boolean(body?.subscribtion && body?.message?.data)
+    return (
+        typeof body?.subscription === "string" &&
+        typeof body?.message?.data === "string" &&
+        typeof body?.message?.messageId === "string"
+    );
 }
 
 export class GooglePubSubService implements PubSubService {
@@ -54,7 +59,7 @@ export class GooglePubSubService implements PubSubService {
         })
     }
 
-    validatePayload(payload: Record<string, undefined>): boolean {
+    validatePayload(payload: Record<string, unknown>): boolean {
         return isPubSubPayload(payload)
     }
 }

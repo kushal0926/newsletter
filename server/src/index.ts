@@ -1,12 +1,23 @@
 import "dotenv/config";
 import { createServer } from "./server";
-import { GCP_PROJECT_ID, PORT } from "./config/env.config";
+import {
+  GCP_PROJECT_ID,
+  PORT,
+  RESEND_API_KEY,
+  RESEND_SENDER,
+} from "./config/env.config";
 import { GooglePubSubService } from "./services/pubsub/gcp";
+import { ResendService } from "./services/mailer/resend";
 
-const port = PORT || 8080;
+const port = PORT;
 const pubSub = new GooglePubSubService(GCP_PROJECT_ID as string);
 
-const server = createServer(pubSub).listen(port, () => {
+const mailer = new ResendService({
+  apiKey: RESEND_API_KEY as string,
+  sender: RESEND_SENDER,
+});
+
+const server = createServer({ pubSub, mailer }).listen(port, () => {
   console.log(`🚀 Server ready at: http://localhost:${port}`);
 });
 

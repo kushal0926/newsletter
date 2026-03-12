@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { isEmailValid } from "../utils/email";
 import { upsertSubscriber } from "../services/newsletter";
 import HttpStatus from "http-status";
-import { PubSubService } from "src/services/pubsub/type";
+import { PubSubService } from "../services/pubsub/type";
 
 interface SignupPayload {
   email?: string;
@@ -29,14 +29,17 @@ export const signupHandler = (pubSub: PubSubService) => async (req: Request, res
     }
 
     // creating user newsletter_subscriber
-    const newsletterSubscriber = await upsertSubscriber(email);
-    
+    const { token } = await upsertSubscriber(email);
+
     // publish a notification pub/sub topic
-    await pubSub.publish("newsletter-signup", { data: "signup done!"})
+    await pubSub.publish("newsletter-signup", { email, token });
 
     console.log("signup successful");
 
-    return res.status(HttpStatus.OK).json(newsletterSubscriber);
+    return res.status(HttpStatus.OK).json({
+      success: true,
+      message: "subscriber upserted successfully.",
+    });
   } catch (error) {
     console.error(error);
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

@@ -33,7 +33,9 @@ const SignUp = () => {
         );
       }
 
-      return navigate("/confirm-email-sent", { state: { email } });
+      return navigate("/confirm-email-sent", {
+        state: { email, confirmed: false },
+      });
     } catch (error: unknown) {
       console.log(error);
       setErrorMessage("something went wrong. please try again.");
